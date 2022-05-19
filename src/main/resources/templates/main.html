@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Learn English</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="top"></div>
+
+    <div class="content_background">
+        <p class="main_text">Application for learning English. Dictionary level selection is possible through the menu.
+            Learned words are not re-introduced into the lesson.
+        </p>
+        <img class="main_image" th:src="@{/img/flag.png}" alt="flag">
+    </div>
+
+    <div th:replace="footer"></div>
+</div>
+</body>
+
+</html>

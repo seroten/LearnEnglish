@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="background" th:fragment="top">
+    <div class="top">
+        <p class="top_text" th:text="${word} != null ? ${libraryName} : 'Learn English'"></p>
+    </div>
+    <div class="top dropdown">
+        <img class="image" th:src="@{/img/menu.png}" alt="menu">
+        <div class="dropdown-content">
+            <a class="button_text" th:href="@{/option/1}">Beginner</a>
+            <div class="line_menu"></div>
+            <a class="button_text" href="#">Pre-Intermediate</a>
+            <div class="line_menu"></div>
+            <a class="button_text" href="#">Intermediate</a>
+            <div class="line_menu"></div>
+            <a class="button_text" href="#">Irregular verbs</a>
+            <div class="line_menu"></div>
+            <a class="button_text" href="#">Reset progress</a>
+            <div class="line_menu"></div>
+            <form th:action="@{/logout}" method="POST">
+                <input type="submit" value="Sign out" hidden/>
+                <button>
+                  <p class="button_text">Sign out</p>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

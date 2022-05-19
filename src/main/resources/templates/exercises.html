@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Learn English</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="top"></div>
+
+    <div class="content_background">
+        <form th:method="GET">
+            <div class="border_words">
+                <div class="words">
+                    <p class="words_text" th:utext="${word.getTranslate()}"></p>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="words">
+                    <p class="words_text" style="opacity:0" id="hidden_word" th:utext="${word.getWord()}"></p>
+                </div>
+            </div>
+            <button type="button" id="button_1" onclick="showWord()" th:formaction="@{/learned/{wordId}(wordId = ${word.getId()})}">
+                <p class="button_text" id="showButtontext">
+                    Show
+                </p>
+            </button>
+            <button class="button_2" type="button" id="button_2" onclick="showWord()" th:formaction="@{/exercises}">
+                <p class="button_text" id="bottomButtontext">
+                    I do not know
+                </p>
+            </button>
+        </form>
+        <form>
+
+        </form>
+    </div>
+
+    <div th:replace="footer"></div>
+</div>
+</body>
+
+</html>

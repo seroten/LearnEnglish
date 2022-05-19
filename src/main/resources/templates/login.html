@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Learn English</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="top"></div>
+
+    <div class="content_background">
+        <div style="color: red" th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div style="color: green" th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        <form class="login" th:method="POST" th:action="@{/login}">
+            <div><label class="login_text"> User Name : <input class="login_text" type="text" name="username"/> </label></div>
+            <div><label class="login_text"> Password: <input class="login_text" type="password" name="password"/> </label></div>
+            <div><button class="login_button button_text login_button_text" type="submit"/>Sign In</div>
+        </form>
+        <div>
+            <a class="button_text login_button_text login_sign_up"th:href="@{/registration}">Sign up</a>
+        </div>
+    </div>
+
+    <div th:replace="footer"></div>
+</div>
+</body>
+</html>

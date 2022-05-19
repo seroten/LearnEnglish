@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Learn English</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="top"></div>
+
+    <div class="content_background">
+        <form th:method="GET" th:action="@{/exercises/{id}(id = ${libraryId})}">
+            <p>Type of training</p>
+            <div class="form_radio">
+                <label for="format1">
+                    <input type="radio" id="format1" name="format" value="learn" disabled>
+                    <span>Learn</span>
+                </label>
+                <div class="line_menu"></div>
+                <label for="format2">
+                    <input type="radio" id="format2" name="format" value="repeat" checked>
+                    <span>Repeat</span>
+                </label>
+            </div>
+            <div class="form_radio">
+                <label for="sort1">
+                    <input type="radio" id="sort1" name="direction" value="direct" checked>
+                    <span>direct</span>
+                </label>
+                <label for="sort2">
+                    <input type="radio" id="sort2" name="direction" value="reverse">
+                    <span>reverse</span>
+                </label>
+                <label for="sort3">
+                    <input type="radio" id="sort3" name="direction" value="shuffle">
+                    <span>shuffle</span>
+                </label>
+            </div>
+            <button class="button" type="submit" id="button">
+                <p class="button_text">Start</p>
+            </button>
+        </form>
+    </div>
+
+    <div th:replace="footer"></div>
+</div>
+</body>
+</html>
