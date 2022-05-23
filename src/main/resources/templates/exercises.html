@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Learn English</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
 
 <body>
@@ -25,16 +25,28 @@
                     <p class="words_text" style="opacity:0" id="hidden_word" th:utext="${word.getWord()}"></p>
                 </div>
             </div>
-            <button type="button" id="button_1" onclick="showWord()" th:formaction="@{/learned/{wordId}(wordId = ${word.getId()})}">
-                <p class="button_text" id="showButtontext">
-                    Show
-                </p>
-            </button>
-            <button class="button_2" type="button" id="button_2" onclick="showWord()" th:formaction="@{/exercises}">
-                <p class="button_text" id="bottomButtontext">
-                    I do not know
-                </p>
-            </button>
+            <div class="next_button">
+                <input type="text" hidden name="wordsNumber" id="wordsNumber">
+                <button type="button" id="button_1" th:onclick="'javascript:previous(' + ${wordNumber} + ')'" th:formaction="@{/exercises}">
+                    <p class="button_text" id="previous">
+                        Previous
+                    </p>
+                </button>
+                <button type="button" id="button_2" onclick="showWord()"
+                        th:formaction="@{/learned/{wordId}(wordId = ${word.getId()})}">
+                    <p class="button_text" id="next">
+                        Show
+                    </p>
+                </button>
+            </div>
+            <div class="repeat_button" id="repeat_button">
+                <button class="button_2" type="button" id="button_3" th:onclick="'javascript:unlearned(' + ${wordNumber} + ')'"
+                        th:formaction="@{/unlearned/{wordId}(wordId = ${word.getId()})}">
+                    <p class="button_text" id="repeat">
+                        Mark as unlearned
+                    </p>
+                </button>
+            </div>
         </form>
         <form>
 

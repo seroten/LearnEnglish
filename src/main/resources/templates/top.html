@@ -18,12 +18,15 @@
             <div class="line_menu"></div>
             <a class="button_text" href="#">Reset progress</a>
             <div class="line_menu"></div>
-            <form th:action="@{/logout}" method="POST">
-                <input type="submit" value="Sign out" hidden/>
-                <button>
-                  <p class="button_text">Sign out</p>
-                </button>
-            </form>
+            <div>
+<!--                <form th:action="@{/logout}" method="POST">-->
+<!--                    <input type="submit" value="Sign out" hidden/>-->
+<!--                    <button class="button_drop">-->
+<!--                        <p class="button_text">Sign out</p>-->
+<!--                    </button>-->
+<!--                </form>-->
+                <a class="button_text"th:href="@{/logout}">Sign out</a>
+            </div>
         </div>
     </div>
 </div>

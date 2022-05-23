@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Learn English</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <script type="text/javascript" th:src="@{/scripts/script.js}"></script>
+    <script type="text/javascript" th:src="@{/js}"></script>
 </head>
 <body>
 <div class="container">
@@ -14,27 +14,27 @@
     <div class="content_background">
         <form th:method="GET" th:action="@{/exercises/{id}(id = ${libraryId})}">
             <p>Type of training</p>
-            <div class="form_radio">
-                <label for="format1">
+            <div >
+                <label class="radio2" for="format1">
                     <input type="radio" id="format1" name="format" value="learn" disabled>
                     <span>Learn</span>
                 </label>
                 <div class="line_menu"></div>
-                <label for="format2">
+                <label class="radio2" for="format2">
                     <input type="radio" id="format2" name="format" value="repeat" checked>
                     <span>Repeat</span>
                 </label>
             </div>
-            <div class="form_radio">
-                <label for="sort1">
+            <div >
+                <label class="radio2" for="sort1">
                     <input type="radio" id="sort1" name="direction" value="direct" checked>
                     <span>direct</span>
                 </label>
-                <label for="sort2">
+                <label class="radio2" for="sort2">
                     <input type="radio" id="sort2" name="direction" value="reverse">
                     <span>reverse</span>
                 </label>
-                <label for="sort3">
+                <label class="radio2" for="sort3">
                     <input type="radio" id="sort3" name="direction" value="shuffle">
                     <span>shuffle</span>
                 </label>
