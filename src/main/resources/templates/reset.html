@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Learn English</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/js}"></script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="top"></div>
+
+    <div>
+        <form th:method="GET" th:action="@{/reset}">
+            <div>
+                <label class="radio2" for="reset1">
+                    <input type="radio" id="reset1" name="libraryNumber" value="1" checked>
+                    <span>Beginner</span>
+                </label>
+                <label class="radio2" for="reset2">
+                    <input type="radio" id="reset2" name="libraryNumber" value="2">
+                    <span>Pre-Intermediate</span>
+                </label>
+                <label class="radio2" for="reset1">
+                    <input type="radio" id="reset3" name="libraryNumber" value="3">
+                    <span>Intermediate</span>
+                </label>
+                <label class="radio2" for="reset1">
+                    <input type="radio" id="reset4" name="libraryNumber" value="4">
+                    <span>Irregular verbs</span>
+                </label>
+            </div>
+            <div>
+                <button type="submit">
+                    <p class="button_text">
+                        Reset
+                    </p>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div th:replace="footer"></div>
+</div>
+</body>
+</html>

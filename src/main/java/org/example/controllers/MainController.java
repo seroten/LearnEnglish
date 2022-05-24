@@ -94,6 +94,17 @@ public class MainController {
         return "redirect:/exercises";
     }
 
+    @GetMapping("/option2")
+    public String resetForm() {
+        return "reset";
+    }
+
+    @GetMapping("/reset")
+    public String reset(@RequestParam String libraryNumber) {
+        wordRepo.reset(Integer.parseInt(libraryNumber));
+        return "redirect:/";
+    }
+
     private void setLibraryName(int libraryId) {
         //TODO перенести в базу данных
         libraryNumber = libraryId;
