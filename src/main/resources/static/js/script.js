@@ -3,7 +3,7 @@ let show = false;
 function showWord() {
     document.getElementById('hidden_word').style.opacity = "0.6";
     document.getElementById('next').innerHTML = "Next";
-    document.getElementById('repeat_button').style.display = "flex";
+    // document.getElementById('repeat_button').style.display = "flex";
 
     if (show) {
         document.getElementById('button_1')

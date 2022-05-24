@@ -32,7 +32,6 @@ public class MainController {
 
     @GetMapping("/exercises")
     public String learn(@RequestParam(name = "wordsNumber", required = false) String wordsNumber, Model model) {
-        System.out.println(wordsNumber);
         if (wordsNumber != null && !wordsNumber.equals("")) {
             if(Integer.parseInt(wordsNumber) >= 0) {
                 wordNumber = Integer.parseInt(wordsNumber);
@@ -56,7 +55,9 @@ public class MainController {
         int libraryId = Integer.parseInt(id);
         if (words != null && words.size() > 0) {
             words.clear();
+            wordNumber = 0;
         }
+        System.out.println(direction);
         if (direction.equals("direct")) {
             words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId);
         } else if (direction.equals("reverse")) {

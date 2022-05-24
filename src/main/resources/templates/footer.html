@@ -3,7 +3,7 @@
     <body>
         <div class="background" th:fragment="footer">
             <p class="footer_text" th:text="${libraryName} != null ? 'Total : ' + ${total} : ''"></p>
-            <p class="footer_text" th:text="${libraryName} != null ? 'Learned : ' + ${learned} : ''"></p>
+            <p class="footer_text" th:text="${libraryName} != null ? 'Repeated : ' + ${learned} : ''"></p>
         </div>
     </body>
 </html>

@@ -18,9 +18,12 @@
             <div class="line_menu"></div>
             <a class="button_text" th:href="@{/option2}">Reset progress</a>
             <div class="line_menu"></div>
-            <div>
-                <a class="button_text"th:href="@{/logout}">Sign out</a>
-            </div>
+            <form th:action="@{/logout}" method="POST">
+                <button class="button_text sign_out" type="submit">
+                    Sign Out
+                </button>
+            </form>
+
         </div>
     </div>
 </div>

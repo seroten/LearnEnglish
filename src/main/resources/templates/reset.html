@@ -10,37 +10,40 @@
 <body>
 <div class="container">
     <div th:replace="top"></div>
-
-    <div>
-        <form th:method="GET" th:action="@{/reset}">
-            <div>
-                <label class="radio2" for="reset1">
-                    <input type="radio" id="reset1" name="libraryNumber" value="1" checked>
-                    <span>Beginner</span>
-                </label>
-                <label class="radio2" for="reset2">
-                    <input type="radio" id="reset2" name="libraryNumber" value="2">
-                    <span>Pre-Intermediate</span>
-                </label>
-                <label class="radio2" for="reset1">
-                    <input type="radio" id="reset3" name="libraryNumber" value="3">
-                    <span>Intermediate</span>
-                </label>
-                <label class="radio2" for="reset1">
-                    <input type="radio" id="reset4" name="libraryNumber" value="4">
-                    <span>Irregular verbs</span>
-                </label>
-            </div>
-            <div>
-                <button type="submit">
-                    <p class="button_text">
-                        Reset
-                    </p>
-                </button>
-            </div>
-        </form>
+    <div class="content_background">
+        <div>
+            <p class="option_text">Library for reset</p>
+        </div>
+        <div class="reset_form">
+            <form th:method="GET" th:action="@{/reset}">
+                <div>
+                    <label class="radio2" for="reset1">
+                        <input type="radio" id="reset1" name="libraryNumber" value="1" checked>
+                        <span class="words_text">Beginner</span>
+                    </label>
+                    <label class="radio2" for="reset2">
+                        <input type="radio" id="reset2" name="libraryNumber" value="2">
+                        <span class="words_text">Pre-Intermediate</span>
+                    </label>
+                    <label class="radio2" for="reset3">
+                        <input type="radio" id="reset3" name="libraryNumber" value="3">
+                        <span class="words_text">Intermediate</span>
+                    </label>
+                    <label class="radio2" for="reset4">
+                        <input type="radio" id="reset4" name="libraryNumber" value="4">
+                        <span class="words_text">Irregular verbs</span>
+                    </label>
+                </div>
+                <div>
+                    <button type="submit">
+                        <p class="button_text">
+                            Reset
+                        </p>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-
     <div th:replace="footer"></div>
 </div>
 </body>
