@@ -26,10 +26,11 @@ public class Word {
     private String mp3;
     private Integer libraryNumber;
     private Boolean learned;
+    private Integer wordsBlock;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User author;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id")
+//    private User author;
 
     public Word(String word, String translate, String transcription) {
         this.word = word;

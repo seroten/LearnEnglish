@@ -54,8 +54,9 @@ body {
   background-color: #423a3a;
   margin-top: 10vh;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: 2%;
   max-width: 80vh;
+  min-width: 84%;
   min-height: 40vh;
   border-radius: 10px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -103,6 +104,10 @@ button {
   margin-top: 1vh;
   margin-bottom: 1vh;
   margin-left: 8vh;
+}
+
+.table_sound {
+  display: flex;
 }
 
 .next_button {
@@ -169,7 +174,7 @@ button:hover {
 
 .dropdown {
   position: relative;
-  display: inline-block;
+  /*display: inline-block;*/
   float: right;
 }
 
@@ -266,4 +271,16 @@ button:hover {
 
 .reset_form {
   margin-left: 30%;
+}
+
+.sound_button {
+  padding-right: 3vh;
+  padding-left: 2vh;
+  min-height: 5vh;
+  border-radius: 35px;
+  background: aliceblue;
+}
+
+.div_sound {
+  margin-top: 31vh;
 }

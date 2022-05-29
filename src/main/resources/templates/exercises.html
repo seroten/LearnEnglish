@@ -14,20 +14,28 @@
 
     <div class="content_background">
         <form th:method="GET">
-            <div class="border_words">
-                <div class="words">
-                    <p class="words_text" th:utext="${word.getTranslate()}"></p>
+            <div class="table_sound">
+                <div class="border_words">
+                    <div class="words">
+                        <p class="words_text" th:utext="${word.getTranslate()}"></p>
+                    </div>
+
+                    <div class="line"></div>
+
+                    <div class="words">
+                        <p class="words_text" style="opacity:0" id="hidden_word" th:utext="${word.getWord()}"></p>
+                    </div>
                 </div>
-
-                <div class="line"></div>
-
-                <div class="words">
-                    <p class="words_text" style="opacity:0" id="hidden_word" th:utext="${word.getWord()}"></p>
+                <div class="div_sound">
+                    <button class="sound_button" type="button" th:onclick="'javascript:speak(' + '\'' + ${word.getWord()} + '\'' + ')'">
+                        <img th:src="@{/img/sound--green.svg}" alt="sound">
+                    </button>
                 </div>
             </div>
             <div class="next_button">
                 <input type="text" hidden name="wordsNumber" id="wordsNumber">
-                <button type="button" id="button_1" th:onclick="'javascript:previous(' + ${wordNumber} + ')'" th:formaction="@{/exercises}">
+                <button type="button" id="button_1" th:onclick="'javascript:previous(' + ${wordNumber} + ')'"
+                        th:formaction="@{/exercises}">
                     <p class="button_text" id="previous">
                         Previous
                     </p>
@@ -40,7 +48,8 @@
                 </button>
             </div>
             <div class="repeat_button" id="repeat_button">
-                <button class="button_2" type="button" id="button_3" th:onclick="'javascript:unlearned(' + ${wordNumber} + ')'"
+                <button class="button_2" type="button" id="button_3"
+                        th:onclick="'javascript:unlearned(' + ${wordNumber} + ')'"
                         th:formaction="@{/unlearned/{wordId}(wordId = ${word.getId()})}">
                     <p class="button_text" id="repeat">
                         Mark as unlearned

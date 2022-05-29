@@ -18,29 +18,25 @@ public class MainController {
     private WordRepo wordRepo;
     private Word word;
     private List<Word> words;
-    private String libraryName;
-    private int libraryNumber;
+    private int libraryId;
     private int wordNumber = 0;
 
     @GetMapping("/")
     public String main(Model model) {
-        word = null;
-        libraryName = null;
-        model.addAttribute("word", word);
         return "main";
     }
 
     @GetMapping("/exercises")
     public String learn(@RequestParam(name = "wordsNumber", required = false) String wordsNumber, Model model) {
         if (wordsNumber != null && !wordsNumber.equals("")) {
-            if(Integer.parseInt(wordsNumber) >= 0) {
+            if (Integer.parseInt(wordsNumber) >= 0) {
                 wordNumber = Integer.parseInt(wordsNumber);
             }
         }
         model.addAttribute("word", words.get(wordNumber));
-        model.addAttribute("libraryName", libraryName);
-        model.addAttribute("total", wordRepo.findAll().size());
-        model.addAttribute("learned", wordRepo.findByLearnedIsTrueAndLibraryNumberIs(libraryNumber));
+        model.addAttribute("libraryName", words.get(0).getLibraryName(libraryId));
+        model.addAttribute("total", wordRepo.findByLibraryNumber(libraryId).size());
+        model.addAttribute("learned", wordRepo.findByLearnedIsTrueAndLibraryNumberIs(libraryId));
         model.addAttribute("wordNumber", wordNumber++);
         if (wordNumber >= words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
@@ -52,12 +48,11 @@ public class MainController {
     public String selectLibrary(@PathVariable String id,
                                 @RequestParam String format,
                                 @RequestParam String direction) {
-        int libraryId = Integer.parseInt(id);
+        libraryId = Integer.parseInt(id);
         if (words != null && words.size() > 0) {
             words.clear();
             wordNumber = 0;
         }
-        System.out.println(direction);
         if (direction.equals("direct")) {
             words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId);
         } else if (direction.equals("reverse")) {
@@ -66,9 +61,7 @@ public class MainController {
             words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId);
             Collections.shuffle(words);
         }
-
-        setLibraryName(libraryId);
-        return "redirect:/exercises?wordNumber";
+        return "redirect:/exercises";
     }
 
     @GetMapping("/option/{id}")
@@ -82,6 +75,7 @@ public class MainController {
         word = wordRepo.findById(Integer.parseInt(wordId));
         word.setLearned(true);
         wordRepo.save(word);
+        wordRepo.saveResult(1, 1);
         return "redirect:/exercises";
     }
 
@@ -104,23 +98,5 @@ public class MainController {
     public String reset(@RequestParam String libraryNumber) {
         wordRepo.reset(Integer.parseInt(libraryNumber));
         return "redirect:/";
-    }
-
-    private void setLibraryName(int libraryId) {
-        //TODO перенести в базу данных
-        libraryNumber = libraryId;
-        switch (libraryId) {
-            case 1:
-                libraryName = "Beginner";
-                break;
-            case 2:
-                libraryName = "Pre-Intermediate";
-                break;
-            case 3:
-                libraryName = "Intermediate";
-                break;
-            case 4:
-                libraryName = "Irregular verbs";
-        }
     }
 }

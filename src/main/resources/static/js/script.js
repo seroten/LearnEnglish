@@ -30,3 +30,10 @@ function unlearned(wordNumber) {
         .setAttribute('type', 'submit');
 }
 
+function speak(text) {
+    const message = new SpeechSynthesisUtterance();
+    message.lang = "en-EN";
+    message.text = text;
+    window.speechSynthesis.speak(message)
+}
+
