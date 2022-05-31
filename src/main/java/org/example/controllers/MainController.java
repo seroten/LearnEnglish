@@ -1,7 +1,10 @@
 package org.example.controllers;
 
 import org.example.entities.Word;
+import org.example.repositories.UserProgressRepo;
+import org.example.repositories.UserRepo;
 import org.example.repositories.WordRepo;
+import org.example.services.UserProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,6 +20,12 @@ import java.util.List;
 public class MainController {
     @Autowired
     private WordRepo wordRepo;
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private UserProgressRepo userProgressRepo;
+    @Autowired
+    private UserProgressService userProgressService;
     private Word word;
     private List<Word> words;
     private int libraryId;
@@ -27,16 +37,18 @@ public class MainController {
     }
 
     @GetMapping("/exercises")
-    public String learn(@RequestParam(name = "wordsNumber", required = false) String wordsNumber, Model model) {
+    public String learn(@RequestParam(name = "wordsNumber", required = false) String wordsNumber,
+                        Model model, HttpServletRequest request) {
         if (wordsNumber != null && !wordsNumber.equals("")) {
             if (Integer.parseInt(wordsNumber) >= 0) {
                 wordNumber = Integer.parseInt(wordsNumber);
             }
         }
+        String username = request.getRemoteUser();
         model.addAttribute("word", words.get(wordNumber));
         model.addAttribute("libraryName", words.get(0).getLibraryName(libraryId));
         model.addAttribute("total", wordRepo.findByLibraryNumber(libraryId).size());
-        model.addAttribute("learned", wordRepo.findByLearnedIsTrueAndLibraryNumberIs(libraryId));
+        model.addAttribute("repeated", wordRepo.findByRepeatedIsTrueAndLibraryNumberIs(libraryId, username));
         model.addAttribute("wordNumber", wordNumber++);
         if (wordNumber >= words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
@@ -47,18 +59,24 @@ public class MainController {
     @GetMapping("/exercises/{id}")
     public String selectLibrary(@PathVariable String id,
                                 @RequestParam String format,
-                                @RequestParam String direction) {
-        libraryId = Integer.parseInt(id);
+                                @RequestParam String direction,
+                                HttpServletRequest request) {
         if (words != null && words.size() > 0) {
             words.clear();
             wordNumber = 0;
         }
+        libraryId = Integer.parseInt(id);
+        String username = request.getRemoteUser();
+        if(!userProgressRepo.isExist(username)) {
+            userProgressService.fillProgressTable(userRepo.findByUsername(username).getId().intValue());
+        }
+
         if (direction.equals("direct")) {
-            words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId);
+            words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId, username);
         } else if (direction.equals("reverse")) {
-            words = wordRepo.findByLearnedIsTrueAndLibraryNumberIsSortDesc(libraryId);
+            words = wordRepo.findByRepeatedIsFalseAndLibraryNumberIsSortDesc(libraryId, username);
         } else {
-            words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId);
+            words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId, username);
             Collections.shuffle(words);
         }
         return "redirect:/exercises";
@@ -70,21 +88,27 @@ public class MainController {
         return "option";
     }
 
-    @GetMapping("/learned/{wordId}")
-    public String saveLearned(@PathVariable String wordId) {
-        word = wordRepo.findById(Integer.parseInt(wordId));
-        word.setLearned(true);
-        wordRepo.save(word);
-        wordRepo.saveResult(1, 1);
+    @GetMapping("/repeated/{wordId}")
+    public String saveRepeated(@PathVariable String wordId, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+//        word = wordRepo.findById(Integer.parseInt(wordId));
+//        word.setLearned(true);
+//        wordRepo.save(word);
+        userProgressRepo.save(Integer.parseInt(wordId),
+                userRepo.findByUsername(username).getId().intValue(), true);
         return "redirect:/exercises";
     }
 
     @GetMapping("/unlearned/{wordId}")
     public String saveUnlearned(@PathVariable String wordId,
-                                @RequestParam(name = "wordsNumber", required = false) String wordsNumber) {
-        word = wordRepo.findById(Integer.parseInt(wordId));
-        word.setLearned(false);
-        wordRepo.save(word);
+                                @RequestParam(name = "wordsNumber", required = false) String wordsNumber,
+                                HttpServletRequest request) {
+//        word = wordRepo.findById(Integer.parseInt(wordId));
+//        word.setLearned(false);
+//        wordRepo.save(word);
+        String username = request.getRemoteUser();
+        userProgressRepo.save(Integer.parseInt(wordId),
+                userRepo.findByUsername(username).getId().intValue(), false);
         wordNumber = Integer.parseInt(wordsNumber) + 1;
         return "redirect:/exercises";
     }
@@ -95,8 +119,10 @@ public class MainController {
     }
 
     @GetMapping("/reset")
-    public String reset(@RequestParam String libraryNumber) {
-        wordRepo.reset(Integer.parseInt(libraryNumber));
+    public String reset(@RequestParam String libraryNumber, HttpServletRequest request) {
+//        wordRepo.reset(Integer.parseInt(libraryNumber));
+        String username = request.getRemoteUser();
+        userProgressRepo.reset(Integer.parseInt(libraryNumber), username);
         return "redirect:/";
     }
 }
