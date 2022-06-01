@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<!--      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
 <head>
     <meta charset="UTF-8">
     <title>Registration page </title>
@@ -10,19 +10,22 @@
 <body>
 <div class="container">
     <div th:replace="top"></div>
+
     <div class="content_background">
-        <div style="color: red" th:if="${message}">
-            <p th:utext="${message}"/>
-        </div>
-        <p>Add new user</p>
-        <form th:method="POST" th:action="@{/registration}">
-            <div><label> User name : <input type="text" name="username"/> </label></div>
-            <div><label> Password: <input type="password" name="password"/> </label></div>
-            <div><input type="submit" value="Sign Up"/></div>
+        <p class="registration_heading_text">Add new user</p>
+        <form class="login" th:method="POST" th:action="@{/registration}">
+            <div style="color: red" th:if="${message}">
+                <p th:utext="${message}"/>
+            </div>
+            <div><label class="login_text"> User name : <input class="login_text" type="text" name="username"/> </label></div>
+            <div><label class="login_text"> Password: <input class="login_text" type="password" name="password"/></label></div>
+            <div><button class="login_button button_text login_button_text" type="submit"/>Sign Up</div>
         </form>
-        </br>
-        <a th:href="@{/}">Back to main</a>
+        <div>
+            <a class="button_text login_button_text login_sign_up" th:href="@{/}">Back to main</a>
+        </div>
     </div>
+
     <div th:replace="footer"></div>
 </div>
 </body>

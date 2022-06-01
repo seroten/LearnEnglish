@@ -7,26 +7,27 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserProgressRepo extends JpaRepository<UserProgress, Long> {
-    @Modifying
-    @Transactional
-    @Query(value = "update user_progress set id = default, word_id = ?1, user_id = ?2, " +
-            "learned = 0, repeated = false, date = default",
-            nativeQuery = true)
-    void fillProgressTable(int wordId, int userId);
 
     @Query(value = "select exists(select w.id from word w" +
             "        inner join user_progress up on w.id = up.word_id" +
             "        inner join usr u on up.user_id = u.id" +
-            "        where username = ?1)",
+            "        where w.id = ?1 and u.id = ?2)",
             nativeQuery = true)
-    boolean isExist(String userName);
+    boolean isExist(int wordId, int userId);
 
     @Modifying
     @Transactional
-    @Query(value = "update user_progress up set repeated = ?3, date = default " +
-            "where up.word_id = ?1 and up.user_id = ?2",
+    @Query(value = "update user_progress up set repeated = ?3, date = default" +
+            " where up.word_id = ?1 and up.user_id = ?2",
             nativeQuery = true)
     void save(int wordId, int userId, boolean repeated);
+
+    @Modifying
+    @Transactional
+    @Query(value = "insert into user_progress(word_id, user_id, date, learned, repeated)" +
+            "values (?1, ?2, default, 0, true)",
+            nativeQuery = true)
+    void insert(int wordId, int userId);
 
     @Modifying
     @Transactional

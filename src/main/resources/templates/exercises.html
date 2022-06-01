@@ -50,9 +50,9 @@
             <div class="repeat_button" id="repeat_button">
                 <button class="button_2" type="button" id="button_3"
                         th:onclick="'javascript:unlearned(' + ${wordNumber} + ')'"
-                        th:formaction="@{/unlearned/{wordId}(wordId = ${word.getId()})}">
+                        th:formaction="@{/unrepeated/{wordId}(wordId = ${word.getId()})}">
                     <p class="button_text" id="repeat">
-                        Mark as unlearned
+                        Mark as unrepeated
                     </p>
                 </button>
             </div>

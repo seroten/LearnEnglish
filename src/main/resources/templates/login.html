@@ -11,7 +11,6 @@
     <div th:replace="top"></div>
 
     <div class="content_background">
-
         <form class="login" th:method="POST" th:action="@{/login}">
             <div style="color: red" th:if="${param.error}">
                 Invalid username and password.
@@ -24,7 +23,7 @@
             <div><button class="login_button button_text login_button_text" type="submit"/>Sign In</div>
         </form>
         <div>
-            <a class="button_text login_button_text login_sign_up"th:href="@{/registration}">Sign up</a>
+            <a class="button_text login_button_text login_sign_up" th:href="@{/registration}">Sign up</a>
         </div>
     </div>
 

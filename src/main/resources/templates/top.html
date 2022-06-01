@@ -5,6 +5,9 @@
     <div class="top">
         <p class="top_text" th:text="${word} != null ? ${libraryName} : 'Learn English'"></p>
     </div>
+    <div class="top" th:inline="text">
+        <p class="top_text" th:inline="text">[[${#httpServletRequest.remoteUser}]]</p>
+    </div>
     <div class="top dropdown">
         <img class="image" th:src="@{/img/menu.png}" alt="menu">
         <div class="dropdown-content">

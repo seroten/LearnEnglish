@@ -4,7 +4,6 @@ import org.example.entities.Word;
 import org.example.repositories.UserProgressRepo;
 import org.example.repositories.UserRepo;
 import org.example.repositories.WordRepo;
-import org.example.services.UserProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +23,6 @@ public class MainController {
     private UserRepo userRepo;
     @Autowired
     private UserProgressRepo userProgressRepo;
-    @Autowired
-    private UserProgressService userProgressService;
-    private Word word;
     private List<Word> words;
     private int libraryId;
     private int wordNumber = 0;
@@ -67,16 +63,12 @@ public class MainController {
         }
         libraryId = Integer.parseInt(id);
         String username = request.getRemoteUser();
-        if(!userProgressRepo.isExist(username)) {
-            userProgressService.fillProgressTable(userRepo.findByUsername(username).getId().intValue());
-        }
-
         if (direction.equals("direct")) {
-            words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId, username);
+            words = wordRepo.findByRepeatedIsFalseAndLibraryNumberIs(libraryId, username);
         } else if (direction.equals("reverse")) {
             words = wordRepo.findByRepeatedIsFalseAndLibraryNumberIsSortDesc(libraryId, username);
         } else {
-            words = wordRepo.findByLearnedIsFalseAndLibraryNumberIs(libraryId, username);
+            words = wordRepo.findByRepeatedIsFalseAndLibraryNumberIs(libraryId, username);
             Collections.shuffle(words);
         }
         return "redirect:/exercises";
@@ -90,25 +82,23 @@ public class MainController {
 
     @GetMapping("/repeated/{wordId}")
     public String saveRepeated(@PathVariable String wordId, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-//        word = wordRepo.findById(Integer.parseInt(wordId));
-//        word.setLearned(true);
-//        wordRepo.save(word);
-        userProgressRepo.save(Integer.parseInt(wordId),
-                userRepo.findByUsername(username).getId().intValue(), true);
+        int userId = userRepo.findByUsername(request.getRemoteUser()).getId().intValue();
+        int wordIdInt = Integer.parseInt(wordId);
+        if(userProgressRepo.isExist(wordIdInt, userId)) {
+            userProgressRepo.save(wordIdInt, userId, true);
+        } else {
+            userProgressRepo.insert(wordIdInt, userId);
+        }
         return "redirect:/exercises";
     }
 
-    @GetMapping("/unlearned/{wordId}")
+    @GetMapping("/unrepeated/{wordId}")
     public String saveUnlearned(@PathVariable String wordId,
                                 @RequestParam(name = "wordsNumber", required = false) String wordsNumber,
                                 HttpServletRequest request) {
-//        word = wordRepo.findById(Integer.parseInt(wordId));
-//        word.setLearned(false);
-//        wordRepo.save(word);
-        String username = request.getRemoteUser();
-        userProgressRepo.save(Integer.parseInt(wordId),
-                userRepo.findByUsername(username).getId().intValue(), false);
+        int userId = userRepo.findByUsername(request.getRemoteUser()).getId().intValue();
+        int wordIdInt = Integer.parseInt(wordId);
+        userProgressRepo.save(wordIdInt, userId, false);
         wordNumber = Integer.parseInt(wordsNumber) + 1;
         return "redirect:/exercises";
     }
@@ -120,7 +110,6 @@ public class MainController {
 
     @GetMapping("/reset")
     public String reset(@RequestParam String libraryNumber, HttpServletRequest request) {
-//        wordRepo.reset(Integer.parseInt(libraryNumber));
         String username = request.getRemoteUser();
         userProgressRepo.reset(Integer.parseInt(libraryNumber), username);
         return "redirect:/";
