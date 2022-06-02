@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class MainController {
         model.addAttribute("word", words.get(wordNumber));
         model.addAttribute("libraryName", words.get(0).getLibraryName(libraryId));
         model.addAttribute("total", wordRepo.findByLibraryNumber(libraryId).size());
-        model.addAttribute("repeated", wordRepo.findByRepeatedIsTrueAndLibraryNumberIs(libraryId, username));
+        model.addAttribute("repeated", wordRepo.findCountByRepeatedIsTrueAndLibraryNumberIs(libraryId, username));
         model.addAttribute("wordNumber", wordNumber++);
         if (wordNumber >= words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
@@ -55,8 +56,13 @@ public class MainController {
     @GetMapping("/exercises/{id}")
     public String selectLibrary(@PathVariable String id,
                                 @RequestParam String format,
-                                @RequestParam String direction,
+                                @RequestParam(required = false) String direction,
+                                RedirectAttributes redirectAttributes,
                                 HttpServletRequest request) {
+        if(format.equals("learn")) {
+            redirectAttributes.addAttribute("libraryId", id);
+            return "redirect:/learn/choose";
+        }
         if (words != null && words.size() > 0) {
             words.clear();
             wordNumber = 0;

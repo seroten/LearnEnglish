@@ -5,7 +5,19 @@
     <meta charset="UTF-8">
     <title>Learn English</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-    <script type="text/javascript" th:src="@{/js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(function() {
+            var f = $('[name="format"]'), r = $('[type="radio"]').not(f), n =  $('[name="direction"]');
+            f.on("click", function() {
+                var repeat = this.value == "repeat";
+                r.each(function(indx, el){
+                    repeat ? $(el).prop({disabled : true, checked : false}) : $(el).removeAttr("disabled")
+                });
+                n.prop({disabled : !repeat})
+            })
+        });
+    </script>
 </head>
 <body>
 <div class="container">
@@ -19,7 +31,7 @@
             <form  th:method="GET" th:action="@{/exercises/{id}(id = ${libraryId})}">
                 <div>
                     <label class="radio2 radio3" for="format1">
-                        <input type="radio" id="format1" name="format" value="learn" disabled>
+                        <input type="radio" id="format1" name="format" value="learn">
                         <span class="words_text">Learn</span>
                     </label>
                     <div class="line_menu line_menu2"></div>

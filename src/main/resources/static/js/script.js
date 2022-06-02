@@ -36,4 +36,3 @@ function speak(text) {
     message.text = text;
     window.speechSynthesis.speak(message)
 }
-

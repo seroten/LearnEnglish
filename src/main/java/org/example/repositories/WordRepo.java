@@ -38,5 +38,5 @@ public interface WordRepo extends JpaRepository<Word, Long> {
             " inner join usr u on up.user_id = u.id" +
             " where w.library_number = ?1 and up.repeated = true and u.username = ?2",
             nativeQuery = true)
-    int findByRepeatedIsTrueAndLibraryNumberIs(int libraryId, String username);
+    int findCountByRepeatedIsTrueAndLibraryNumberIs(int libraryId, String username);
 }
