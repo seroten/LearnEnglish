@@ -25,9 +25,14 @@ body {
   font-size: 5vh;
   padding-top: 2vh;
   padding-left: 2vh;
+  margin-right: 20px;
   letter-spacing: 0.05em;
   color: #ffffff;
   opacity: 0.8;
+}
+
+.remote_user {
+  display: flex;
 }
 
 .image {
@@ -68,6 +73,8 @@ body {
 }
 
 .words_text {
+  padding-left: 20px;
+  padding-right: 20px;
   font-size: 5vh;
   line-height: 48px;
   letter-spacing: 0.05em;
@@ -172,7 +179,6 @@ button:hover {
 
 .dropdown {
   position: relative;
-  /*display: inline-block;*/
   float: right;
 }
 
@@ -287,4 +293,28 @@ button:hover {
   font-size: 6vh;
   text-align: center;
   padding-top: 5vh;
+}
+
+.border_words_learn {
+  margin-right: auto;
+  margin-top: 4vh;
+  min-width: 45%;
+  min-height: 35vh;
+}
+
+.words_learn {
+  display: revert;
+  padding-top: 25%;
+}
+
+.button_learn {
+  background-color: #ffffff;
+  box-shadow: none;
+  margin-top: 2vh;
+  min-height: 5vh;
+}
+
+.button_text_learn {
+  color: #000000;
+  line-height: 1;
 }

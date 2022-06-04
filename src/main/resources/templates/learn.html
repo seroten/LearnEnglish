@@ -5,13 +5,60 @@
     <meta charset="UTF-8">
     <title>Learn English</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/js/script.js}"></script>
 </head>
 <body>
 <div class="container">
     <div th:replace="top"></div>
 
-    <div>
+    <div class="content_background">
 
+        <div class="table_sound">
+            <div class="border_words_learn border_words">
+                <div class="words_learn words">
+                    <p class="words_text" th:utext="${word.getTranslate()}"></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="repeat_button" id="word_button1">
+                <button class="button_learn button_2" type="button" th:id="${threeWords.get(0).getWord()}"
+                        th:onclick="'paintButton(\'' + ${word.getWord()} + '\', \'' + ${threeWords.get(0).getWord()} + '\');'">
+                    <p class="button_text_learn button_text" id="word1" th:utext="${threeWords.get(0).getWord()}">
+                        Word
+                    </p>
+                </button>
+            </div>
+            <div class="repeat_button" id="word_button2">
+                <button class="button_learn button_2" type="button" th:id="${threeWords.get(1).getWord()}"
+                        th:onclick="'paintButton(\'' + ${word.getWord()} + '\', \'' + ${threeWords.get(1).getWord()} + '\');'">
+                    <p class="button_text_learn button_text" id="word2" th:utext="${threeWords.get(1).getWord()}">
+                        Word
+                    </p>
+                </button>
+            </div>
+            <div class="repeat_button" id="word_button3">
+                <button class="button_learn button_2" type="button" th:id="${threeWords.get(2).getWord()}"
+                        th:onclick="'paintButton(\'' + ${word.getWord()} + '\', \'' + ${threeWords.get(2).getWord()} + '\');'">
+                    <p class="button_text_learn button_text" id="word3" th:utext="${threeWords.get(2).getWord()}">
+                        Word
+                    </p>
+                </button>
+            </div>
+            <form th:method="GET">
+                <div class="repeat_button" th:id="next_button_div" style="display: none">
+                    <input type="hidden" th:name="learnedField" th:value="${learnedField}+1">
+                    <input type="hidden" th:name="repeatedField" th:value="${repeatedField}">
+                    <input type="hidden" id="wrongChoice" th:name="wrongChoice" th:value="choice">
+                    <button type="submit" id="next_button"
+                            th:formaction="@{/learn/save/{wordId}(wordId = ${word.getId()})}">
+                        <p class="button_text_learn button_text" id="next_word">
+                            Next
+                        </p>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div th:replace="footer"></div>

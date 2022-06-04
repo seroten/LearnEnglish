@@ -36,3 +36,19 @@ function speak(text) {
     message.text = text;
     window.speechSynthesis.speak(message)
 }
+
+let guessed = false
+let wrongChoice = false;
+
+function paintButton(word, buttonWord) {
+    if (guessed != true) {
+        if (word === buttonWord) {
+            document.getElementById(buttonWord).style.background = "#2e9b54";
+            document.getElementById('next_button_div').style.display = "flex";
+            guessed = true;
+        } else {
+            document.getElementById(buttonWord).style.background = "#cd0c0c";
+            document.getElementById('wrongChoice').setAttribute('value', 'wrongChoice');
+        }
+    }
+}

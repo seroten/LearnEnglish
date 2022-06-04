@@ -7,12 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface WordRepo extends JpaRepository<Word, Long> {
+
     Word findById(Integer id);
 
     List<Word> findByLibraryNumber(int number);
 
     @Query(value = "select w.id, w.word, w.translate, w.library_number, w.words_block," +
-            " w.image, w.mp3, w.transcription, w.learned from word w" +
+            " w.image, w.mp3, w.transcription from word w" +
             " left join (select up.word_id, up.repeated, up.learned from user_progress up" +
             " inner join usr u on up.user_id = u.id" +
             " inner join word w on w.id = up.word_id" +
@@ -23,7 +24,7 @@ public interface WordRepo extends JpaRepository<Word, Long> {
     List<Word> findByRepeatedIsFalseAndLibraryNumberIs(int libraryId, String username);
 
     @Query(value = "select w.id, w.word, w.translate, w.library_number, w.words_block," +
-            " w.image, w.mp3, w.transcription, w.learned from word w" +
+            " w.image, w.mp3, w.transcription from word w" +
             " left join (select up.word_id, up.repeated, up.learned from user_progress up" +
             " inner join usr u on up.user_id = u.id" +
             " inner join word w on w.id = up.word_id" +
@@ -39,4 +40,29 @@ public interface WordRepo extends JpaRepository<Word, Long> {
             " where w.library_number = ?1 and up.repeated = true and u.username = ?2",
             nativeQuery = true)
     int findCountByRepeatedIsTrueAndLibraryNumberIs(int libraryId, String username);
+
+    @Query(value = "select count(*) from word w" +
+            " inner join user_progress up on w.id = up.word_id" +
+            " inner join usr u on up.user_id = u.id" +
+            " where w.library_number = ?1 and up.learned = 4 and u.username = ?2",
+            nativeQuery = true)
+    int findCountByLearnedAndLibraryNumberIs(int libraryId, String username);
+
+    @Query(value = "select w.id, w.word, w.translate, w.library_number, w.words_block," +
+            " w.image, w.mp3, w.transcription from word w" +
+            " left join (select up.word_id, up.repeated, up.learned from user_progress up" +
+            " inner join usr u on up.user_id = u.id" +
+            " inner join word w on w.id = up.word_id" +
+            " where u.username = ?2) nt on nt.word_id = w.id" + //4 - final status of word`s learning
+            " where w.library_number = ?1 and w.words_block = ?3 and (nt.learned != 4 or nt.learned is null)" +
+            " order by w.id asc",
+            nativeQuery = true)
+    List<Word> findByLibraryNumberAndNotLearnedAndWordsBlockIs(int libraryId, String username, int wordsBlock);
+
+    @Query(value = "select count(*) from word w" +
+            " inner join user_progress up on w.id = up.word_id" +
+            " inner join usr u on up.user_id = u.id" +
+            " where w.library_number = ?1 and u.username = ?2 and w.words_block = ?3 and up.learned != 4",//4 - final status of word`s learning
+            nativeQuery = true)
+    int findFirstWordsBlockByUnlearnedAndAndLibraryNumberIs(int libraryId, String username, int wordsBlock);
 }

@@ -1,14 +1,10 @@
 package org.example.entities;
 
-import javafx.print.Collation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,12 +21,7 @@ public class Word {
     private String image;
     private String mp3;
     private Integer libraryNumber;
-    private Boolean learned;
     private Integer wordsBlock;
-
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id")
-//    private User author;
 
     public Word(String word, String translate, String transcription) {
         this.word = word;

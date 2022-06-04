@@ -48,6 +48,7 @@
                 </button>
             </div>
             <div class="repeat_button" id="repeat_button">
+                <input type="hidden" th:name="learnedField" th:value="${learnedField}">
                 <button class="button_2" type="button" id="button_3"
                         th:onclick="'javascript:unlearned(' + ${wordNumber} + ')'"
                         th:formaction="@{/unrepeated/{wordId}(wordId = ${word.getId()})}">

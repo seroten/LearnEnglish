@@ -10,14 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
 @Controller
-public class MainController {
+public class RepeatController {
     @Autowired
     private WordRepo wordRepo;
     @Autowired
@@ -29,7 +28,11 @@ public class MainController {
     private int wordNumber = 0;
 
     @GetMapping("/")
-    public String main(Model model) {
+    public String main(Model model, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        if(username != null) {
+            model.addAttribute("remoteUser", username.toUpperCase().substring(0, 1));
+        }
         return "main";
     }
 
@@ -43,10 +46,15 @@ public class MainController {
         }
         String username = request.getRemoteUser();
         model.addAttribute("word", words.get(wordNumber));
+        Integer wordLearnedField = userProgressRepo.getLearnedField(
+                words.get(wordNumber).getId(), userRepo.findByUsername(username).getId().intValue());
+        model.addAttribute("learnedField", wordLearnedField == null ? 0 : wordLearnedField);
         model.addAttribute("libraryName", words.get(0).getLibraryName(libraryId));
         model.addAttribute("total", wordRepo.findByLibraryNumber(libraryId).size());
-        model.addAttribute("repeated", wordRepo.findCountByRepeatedIsTrueAndLibraryNumberIs(libraryId, username));
+        model.addAttribute("score", wordRepo.findCountByRepeatedIsTrueAndLibraryNumberIs(libraryId, username));
         model.addAttribute("wordNumber", wordNumber++);
+        model.addAttribute("countWord", "Repeated");
+        model.addAttribute("remoteUser", username.toUpperCase().substring(0, 1));
         if (wordNumber >= words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
         }
@@ -57,11 +65,9 @@ public class MainController {
     public String selectLibrary(@PathVariable String id,
                                 @RequestParam String format,
                                 @RequestParam(required = false) String direction,
-                                RedirectAttributes redirectAttributes,
                                 HttpServletRequest request) {
         if(format.equals("learn")) {
-            redirectAttributes.addAttribute("libraryId", id);
-            return "redirect:/learn/choose";
+            return "redirect:/learn/" + id;
         }
         if (words != null && words.size() > 0) {
             words.clear();
@@ -87,24 +93,33 @@ public class MainController {
     }
 
     @GetMapping("/repeated/{wordId}")
-    public String saveRepeated(@PathVariable String wordId, HttpServletRequest request) {
+    public String saveRepeated(@PathVariable String wordId,
+                               @RequestParam String learnedField,
+                               HttpServletRequest request) {
         int userId = userRepo.findByUsername(request.getRemoteUser()).getId().intValue();
         int wordIdInt = Integer.parseInt(wordId);
+        int learnedFieldInt = Integer.parseInt(learnedField);
         if(userProgressRepo.isExist(wordIdInt, userId)) {
-            userProgressRepo.save(wordIdInt, userId, true);
+            userProgressRepo.save(wordIdInt, userId, true, learnedFieldInt);
         } else {
-            userProgressRepo.insert(wordIdInt, userId);
+            userProgressRepo.insert(wordIdInt, userId, true, learnedFieldInt);
         }
         return "redirect:/exercises";
     }
 
     @GetMapping("/unrepeated/{wordId}")
     public String saveUnlearned(@PathVariable String wordId,
-                                @RequestParam(name = "wordsNumber", required = false) String wordsNumber,
+                                @RequestParam(required = false) String wordsNumber,
+                                @RequestParam String learnedField,
                                 HttpServletRequest request) {
         int userId = userRepo.findByUsername(request.getRemoteUser()).getId().intValue();
         int wordIdInt = Integer.parseInt(wordId);
-        userProgressRepo.save(wordIdInt, userId, false);
+        int learnedFieldInt = Integer.parseInt(learnedField);
+        if(userProgressRepo.isExist(wordIdInt, userId)) {
+            userProgressRepo.save(wordIdInt, userId, false, learnedFieldInt);
+        } else {
+            userProgressRepo.insert(wordIdInt, userId, true, learnedFieldInt);
+        }
         wordNumber = Integer.parseInt(wordsNumber) + 1;
         return "redirect:/exercises";
     }
