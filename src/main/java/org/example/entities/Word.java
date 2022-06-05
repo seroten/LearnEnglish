@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Random;
 
 @Data
 @NoArgsConstructor
@@ -31,11 +32,32 @@ public class Word {
 
     public String getLibraryName(int number) {
         switch (number) {
-            case 1: return "Beginner";
-            case 2: return "Pre-Intermediate";
-            case 3: return "Intermediate";
-            case 4: return "Irregular verbs";
-            default: return "Learn English";
+            case 1:
+                return "Beginner";
+            case 2:
+                return "Pre-Intermediate";
+            case 3:
+                return "Intermediate";
+            case 4:
+                return "Irregular verbs";
+            default:
+                return "Learn English";
         }
+    }
+
+    public char[] getArrayLetters() {
+        return this.getWord().toCharArray();
+    }
+
+    public char[] getShuffleArrayLetters() {
+        char[] temp = this.getWord().toCharArray();
+        Random rnd = new Random();
+        for (int i = 1; i < temp.length; i++) {
+            int j = rnd.nextInt(i);
+            char a = temp[i];
+            temp[i] = temp[j];
+            temp[j] = a;
+        }
+        return temp;
     }
 }

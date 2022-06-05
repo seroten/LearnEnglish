@@ -52,3 +52,20 @@ function paintButton(word, buttonWord) {
         }
     }
 }
+
+let wordCursor = 0;
+
+function choiceLetter(word, letter, id) {
+    if(word.charAt(wordCursor) === letter) {
+        document.getElementById(id).style.visibility = "hidden";
+        document.getElementById(letter + wordCursor).style.display = "block";
+        wordCursor++;
+        if(word.length === wordCursor) {
+            document.getElementById('next_button_div').style.display = "flex";
+        }
+    } else {
+        document.getElementById('wrongChoice').setAttribute('value', 'wrongChoice');
+        document.getElementById(id).style.background = "#cd0c0c";
+        setTimeout(() => document.getElementById(id).style.background = "#ffffff", 1000);
+    }
+}

@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/learn")
@@ -31,6 +35,8 @@ public class LearnController {
     private int libraryId;
     private int wordNumber = 0;
     private List<Word> wordForLearnAndTwoShuffleWords;
+    private Integer wordLearnedField;
+    private Boolean wordRepeatedField;
 
     /*
         Word`s status
@@ -52,12 +58,12 @@ public class LearnController {
         }
         String username = request.getRemoteUser();
         wordForLearnAndTwoShuffleWords = userProgressService.getThreeWords(words.get(wordNumber), words);
-        model.addAttribute("word", words.get(wordNumber));
-        Integer wordLearnedField = userProgressRepo.getLearnedField(
+        wordLearnedField = userProgressRepo.getLearnedField(
                 words.get(wordNumber).getId(), userRepo.findByUsername(username).getId().intValue());
-        model.addAttribute("learnedField", wordLearnedField == null ? 0 : wordLearnedField);
-        Boolean wordRepeatedField = userProgressRepo
+        wordRepeatedField = userProgressRepo
                 .getRepeatedField(words.get(wordNumber).getId(), userRepo.findByUsername(username).getId().intValue());
+        model.addAttribute("word", words.get(wordNumber));
+        model.addAttribute("learnedField", wordLearnedField == null ? 0 : wordLearnedField);
         model.addAttribute("repeatedField", wordRepeatedField == null ? false : wordRepeatedField);
         model.addAttribute("threeWords", wordForLearnAndTwoShuffleWords);
         model.addAttribute("score", wordRepo.findCountByLearnedAndLibraryNumberIs(libraryId, username));
@@ -66,6 +72,10 @@ public class LearnController {
         model.addAttribute("wordNumber", wordNumber++);
         model.addAttribute("countWord", "Learned");
         model.addAttribute("remoteUser", username.toUpperCase().substring(0, 1));
+        System.out.printf("word - %s, learnedField - %d, wordNumber - %d, wordsBlock = %d",
+                words.get(wordNumber).getWord(), wordLearnedField,
+                wordNumber, words.get(wordNumber).getWordsBlock());
+        System.out.println();
         if (wordNumber >= words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
         }

@@ -18,7 +18,7 @@ public class UserProgressService {
     public int getFirstUnlearnedWordsBlockNumber(int libraryId, String username) {
         int temp;
         for (int i = 1; i <= countWordsBlock; i++) {
-            temp = wordRepo.findFirstWordsBlockByUnlearnedAndAndLibraryNumberIs(libraryId, username, i);
+            temp = wordRepo.findByFirstWordsBlockUnlearnedAndLibraryNumberIs(libraryId, username, i);
             if(temp != 30) {
                 return i;
             }

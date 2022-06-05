@@ -64,5 +64,5 @@ public interface WordRepo extends JpaRepository<Word, Long> {
             " inner join usr u on up.user_id = u.id" +
             " where w.library_number = ?1 and u.username = ?2 and w.words_block = ?3 and up.learned != 4",//4 - final status of word`s learning
             nativeQuery = true)
-    int findFirstWordsBlockByUnlearnedAndAndLibraryNumberIs(int libraryId, String username, int wordsBlock);
+    int findByFirstWordsBlockUnlearnedAndLibraryNumberIs(int libraryId, String username, int wordsBlock);
 }

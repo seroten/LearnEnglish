@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
-    <body>
-        <div class="background" th:fragment="footer">
-            <p class="footer_text" th:text="${libraryName} != null ? 'Total : ' + ${total} : ''"></p>
-            <p class="footer_text" th:text="${libraryName} != null ? ${countWord} + ' : ' + ${score} : ''"></p>
-        </div>
-    </body>
-</html>
+<div class="background" th:fragment="footer">
+    <p class="footer_text" th:text="${libraryName} != null ? 'Total : ' + ${total} : ''"></p>
+    <p class="footer_text" th:text="${libraryName} != null ? ${countWord} + ' : ' + ${score} : ''"></p>
+</div>

@@ -314,6 +314,21 @@ button:hover {
   min-height: 5vh;
 }
 
+.small_button_block {
+  display: flex;
+  justify-content: center;
+}
+
+.small_button_learn_up {
+  display: none;
+}
+
+.small_button_learn {
+  width: 49px;
+  margin-right: 10px;
+  visibility: visible;
+}
+
 .button_text_learn {
   color: #000000;
   line-height: 1;
