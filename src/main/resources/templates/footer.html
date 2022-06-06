@@ -1,4 +1,6 @@
 <div class="background" th:fragment="footer">
-    <p class="footer_text" th:text="${libraryName} != null ? 'Total : ' + ${total} : ''"></p>
-    <p class="footer_text" th:text="${libraryName} != null ? ${countWord} + ' : ' + ${score} : ''"></p>
+    <p class="footer_text" th:utext="${libraryName} != null ? 'Total : ' + ${total} : ''"></p>
+    <p class="footer_text" th:utext="${countLearnedWordsInWordsBlock} + '/30'"
+       th:if="${countLearnedWordsInWordsBlock >= 0}"></p>
+    <p class="footer_text" th:utext="${libraryName} != null ? ${countWord} + ' : ' + ${score} : ''"></p>
 </div>

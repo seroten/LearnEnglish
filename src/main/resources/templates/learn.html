@@ -87,6 +87,16 @@
                 </button>
             </div>
         </form>
+        <form th:method="GET" th:if="wordsBlockIsLearned">
+            <div class="repeat_button" th:id="next_button_div">
+                <button type="submit" id="next_button2"
+                        th:formaction="@{/learn/{id}(id = ${libraryId})}">
+                    <p class="button_text_learn button_text" id="next_word2">
+                        Next
+                    </p>
+                </button>
+            </div>
+        </form>
     </div>
 
     <div th:replace="footer"></div>
