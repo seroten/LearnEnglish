@@ -37,7 +37,8 @@ public class RepeatController {
     }
 
     @GetMapping("/exercises")
-    public String learn(@RequestParam(name = "wordsNumber", required = false) String wordsNumber,
+    public String learn(@RequestParam(required = false) String wordsNumber,
+                        @RequestParam(required = false, defaultValue = "0") String previous,
                         Model model, HttpServletRequest request) {
         if (wordsNumber != null && !wordsNumber.equals("")) {
             if (Integer.parseInt(wordsNumber) >= 0) {
@@ -55,6 +56,7 @@ public class RepeatController {
         model.addAttribute("wordNumber", wordNumber++);
         model.addAttribute("countWord", "Repeated");
         model.addAttribute("remoteUser", username.toUpperCase().substring(0, 1));
+        model.addAttribute("previous", previous);
         if (wordNumber >= words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
         }

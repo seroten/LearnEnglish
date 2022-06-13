@@ -54,11 +54,11 @@ public class LearnController {
         score = wordRepo.findCountByLearnedAndLibraryNumberIs(libraryId, username);
         total = wordRepo.findByLibraryNumber(libraryId).size();
         if (total == score) {
-            model.addAttribute("libraryIsLearned");
+            model.addAttribute("libraryIsLearned", "Library is learned");
             return "learn";
         }
         if (countLearnedWordsInWordsBlock == 30) {
-            model.addAttribute("wordsBlockIsLearned");
+            model.addAttribute("wordsBlockIsLearned", "Block is learned");
             model.addAttribute("wordsBlock", words.get(0).getWordsBlock());
             model.addAttribute("libraryId", libraryId);
             return "learn";
@@ -85,12 +85,6 @@ public class LearnController {
         model.addAttribute("countWord", "Learned");
         model.addAttribute("countLearnedWordsInWordsBlock", countLearnedWordsInWordsBlock);
         model.addAttribute("remoteUser", username.toUpperCase().substring(0, 1));
-        System.out.printf("word - %s, learnedField - %d, wordNumber - %d, wordsBlock = %d",
-                words.get(wordNumber).getWord(), wordLearnedField,
-                wordNumber, words.get(wordNumber).getWordsBlock());
-        System.out.println();
-        System.out.println(wordRepo
-                .findCountByLearnedAndWordsBlockIsAndLibraryNumberIs(libraryId, words.get(wordNumber).getWordsBlock(), username));
         if (wordNumber >= words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
         }
