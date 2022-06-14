@@ -110,15 +110,17 @@ public class LearnController {
                               @RequestParam String learnedField,
                               @RequestParam Boolean repeatedField,
                               @RequestParam String wrongChoice,
+                              @RequestParam String checkedInput,
                               HttpServletRequest request) {
         int userId = userRepo.findByUsername(request.getRemoteUser()).getId().intValue();
         int wordIdInt = Integer.parseInt(wordId);
         int learnedFieldInt = Integer.parseInt(learnedField);
-        if (!wrongChoice.equals("wrongChoice")) {
+        if ((wrongChoice.equals("rightChoice") || checkedInput.equals("rightChoice")) ||
+                (wrongChoice.equals("choice") & checkedInput.equals("choice"))) {
             if (userProgressRepo.isExist(wordIdInt, userId)) {
-                userProgressRepo.save(wordIdInt, userId, repeatedField, learnedFieldInt);
+                userProgressRepo.update(wordIdInt, userId, repeatedField, learnedFieldInt);
             } else {
-                userProgressRepo.insert(wordIdInt, userId, repeatedField, learnedFieldInt);
+                userProgressRepo.create(wordIdInt, userId, repeatedField, learnedFieldInt);
             }
         }
         return "redirect:/learn/";

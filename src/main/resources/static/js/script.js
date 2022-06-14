@@ -3,7 +3,6 @@ let show = false;
 function showWord() {
     document.getElementById('hidden_word').style.opacity = "0.6";
     document.getElementById('next').innerHTML = "Next";
-    // document.getElementById('repeat_button').style.display = "flex";
 
     if (show) {
         document.getElementById('button_1')
@@ -43,8 +42,12 @@ function paintButton(word, buttonWord) {
         if (word === buttonWord) {
             document.getElementById(buttonWord).style.background = "#2e9b54";
             document.getElementById('next_button_div').style.display = "flex";
-            document.getElementById('ear_word_guessed').style.visibility = "visible";
+            document.getElementById('word_guessed').style.visibility = "visible";
+            if(document.getElementById('ear_word_guessed') !== null) {
+                document.getElementById('ear_word_guessed').style.visibility = "visible";
+            }
             guessed = true;
+            speak(word);
         } else {
             document.getElementById(buttonWord).style.background = "#cd0c0c";
             document.getElementById('wrongChoice').setAttribute('value', 'wrongChoice');
@@ -61,7 +64,11 @@ function choiceLetter(word, letter, id) {
         wordCursor++;
         if (word.length === wordCursor) {
             document.getElementById('next_button_div').style.display = "flex";
-            // document.getElementById('small_button_block2').style.display = "none";
+            document.getElementById('word_guessed').style.visibility = "visible";
+            speak(word);
+            if(document.getElementById('wrongChoice').getAttribute('value') !== 'wrongChoice') {
+                document.getElementById('wrongChoice').setAttribute('value', 'rightChoice');
+            }
         }
     } else {
         if (document.getElementById(id).style.opacity !== "0.2") {
@@ -69,5 +76,16 @@ function choiceLetter(word, letter, id) {
             document.getElementById(id).style.background = "#cd0c0c";
             setTimeout(() => document.getElementById(id).style.background = "#ffffff", 500);
         }
+    }
+}
+
+function checkInput(word) {
+    if(document.getElementById('input_text').value === word) {
+        document.getElementById('checkedInput').setAttribute('value', 'rightChoice');
+        document.getElementById('next_button_div').style.display = "flex";
+        document.getElementById('word_guessed').style.visibility = "visible";
+        speak(word);
+    } else {
+        document.getElementById('checkedInput').setAttribute('value', 'wrongChoice');
     }
 }

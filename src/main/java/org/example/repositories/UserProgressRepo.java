@@ -13,14 +13,14 @@ public interface UserProgressRepo extends JpaRepository<UserProgress, Long> {
     @Query(value = "update user_progress up set repeated = ?3, learned = ?4, date = default" +
             " where up.word_id = ?1 and up.user_id = ?2",
             nativeQuery = true)
-    void save(int wordId, int userId, boolean repeated, int learned);
+    void update(int wordId, int userId, boolean repeated, int learned);
 
     @Modifying
     @Transactional
     @Query(value = "insert into user_progress(word_id, user_id, date, repeated, learned)" +
             "values (?1, ?2, default, ?3, ?4)",
             nativeQuery = true)
-    void insert(int wordId, int userId, boolean repeated, int learned);
+    void create(int wordId, int userId, boolean repeated, int learned);
 
     @Modifying
     @Transactional

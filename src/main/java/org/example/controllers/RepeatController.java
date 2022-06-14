@@ -102,9 +102,9 @@ public class RepeatController {
         int wordIdInt = Integer.parseInt(wordId);
         int learnedFieldInt = Integer.parseInt(learnedField);
         if(userProgressRepo.isExist(wordIdInt, userId)) {
-            userProgressRepo.save(wordIdInt, userId, true, learnedFieldInt);
+            userProgressRepo.update(wordIdInt, userId, true, learnedFieldInt);
         } else {
-            userProgressRepo.insert(wordIdInt, userId, true, learnedFieldInt);
+            userProgressRepo.create(wordIdInt, userId, true, learnedFieldInt);
         }
         return "redirect:/exercises";
     }
@@ -118,9 +118,9 @@ public class RepeatController {
         int wordIdInt = Integer.parseInt(wordId);
         int learnedFieldInt = Integer.parseInt(learnedField);
         if(userProgressRepo.isExist(wordIdInt, userId)) {
-            userProgressRepo.save(wordIdInt, userId, false, learnedFieldInt);
+            userProgressRepo.update(wordIdInt, userId, false, learnedFieldInt);
         } else {
-            userProgressRepo.insert(wordIdInt, userId, true, learnedFieldInt);
+            userProgressRepo.create(wordIdInt, userId, true, learnedFieldInt);
         }
         wordNumber = Integer.parseInt(wordsNumber) + 1;
         return "redirect:/exercises";

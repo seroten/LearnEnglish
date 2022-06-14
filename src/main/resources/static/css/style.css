@@ -340,3 +340,19 @@ button:hover {
   margin-top: -2vh;
   margin-left: 45%;
 }
+
+.input_div {
+  display: flex;
+  justify-content: center;
+  margin-top: 6vh;
+}
+
+.input_text {
+  line-height: unset;
+  margin-top: unset;
+}
+
+.input_arrow {
+  height: 45px;
+  margin-left: 2vh;
+}
