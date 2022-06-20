@@ -60,7 +60,8 @@ public interface WordRepo extends JpaRepository<Word, Long> {
             " inner join word w on w.id = up.word_id" +
             " where u.username = ?2) nt on nt.word_id = w.id" + //4 - final status of word`s learning
             " where w.library_number = ?1 and w.words_block = ?3 and (nt.learned != 4 or nt.learned is null)" +
-            " order by w.id asc",
+            " order by random()" +
+            "limit 10",
             nativeQuery = true)
     List<Word> findByLibraryNumberAndNotLearnedAndWordsBlockIsAndShuffle(int libraryId, String username, int wordsBlock);
 

@@ -31,10 +31,12 @@ public class LearnController {
     private int libraryId;
     private int wordNumber = 0;
     private List<Word> wordForLearnAndTwoShuffleWords;
-    private Integer wordLearnedField;
-    private Boolean wordRepeatedField;
+    private Integer countWordLearnedField;
+    private Boolean countWordRepeatedField;
     private Integer score;
     private Integer total;
+    private String username;
+    private int countLearnedWordsInWordsBlock;
 
     /*
         Word`s status
@@ -48,46 +50,52 @@ public class LearnController {
     @GetMapping("/")
     public String learn(@RequestParam(required = false) String wordsNumber,
                         Model model, HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        int countLearnedWordsInWordsBlock = wordRepo
-                .findCountByLearnedAndWordsBlockIsAndLibraryNumberIs(libraryId, words.get(wordNumber).getWordsBlock(), username);
+        username = request.getRemoteUser();
         score = wordRepo.findCountByLearnedAndLibraryNumberIs(libraryId, username);
         total = wordRepo.findByLibraryNumber(libraryId).size();
-        if (total == score) {
-            model.addAttribute("libraryIsLearned", "Library is learned");
-            return "learn";
-        }
-        if (countLearnedWordsInWordsBlock == 30) {
-            model.addAttribute("wordsBlockIsLearned", "Block is learned");
-            model.addAttribute("wordsBlock", words.get(0).getWordsBlock());
-            model.addAttribute("libraryId", libraryId);
-            return "learn";
-        }
+        countLearnedWordsInWordsBlock = wordRepo
+                .findCountByLearnedAndWordsBlockIsAndLibraryNumberIs(libraryId, words.get(0).getWordsBlock(), username);
         if (wordsNumber != null && !wordsNumber.equals("")) {
             int wordsNumberInt = Integer.parseInt(wordsNumber);
             if (wordsNumberInt >= 0) {
                 wordNumber = wordsNumberInt;
             }
         }
+        if (total == score) {
+            model.addAttribute("libraryIsLearned");
+            model.addAttribute("libraryName", words.get(0).getLibraryName(libraryId));
+            return "learn";
+        }
+        System.out.println("countLearnedWordsInWordsBlock " + countLearnedWordsInWordsBlock);
+        if (countLearnedWordsInWordsBlock == 30) {
+            model.addAttribute("wordsBlockIsLearned", "wordsBlockIsLearned");
+            model.addAttribute("wordsBlock", words.get(0).getWordsBlock());
+            model.addAttribute("libraryId", libraryId);
+            return "learn";
+        }
         wordForLearnAndTwoShuffleWords = userProgressService.getThreeWords(words.get(wordNumber), words);
-        wordLearnedField = userProgressRepo.getLearnedField(
+        countWordLearnedField = userProgressRepo.getLearnedField(
                 words.get(wordNumber).getId(), userRepo.findByUsername(username).getId().intValue());
-        wordRepeatedField = userProgressRepo
+        countWordRepeatedField = userProgressRepo
                 .getRepeatedField(words.get(wordNumber).getId(), userRepo.findByUsername(username).getId().intValue());
         model.addAttribute("word", words.get(wordNumber));
-        model.addAttribute("learnedField", wordLearnedField == null ? 0 : wordLearnedField);
-        model.addAttribute("repeatedField", wordRepeatedField == null ? false : wordRepeatedField);
+        model.addAttribute("learnedField", countWordLearnedField == null ? 0 : countWordLearnedField);
+        model.addAttribute("repeatedField", countWordRepeatedField == null ? false : countWordRepeatedField);
         model.addAttribute("threeWords", wordForLearnAndTwoShuffleWords);
         model.addAttribute("score", score);
         model.addAttribute("total", total);
         model.addAttribute("libraryName", words.get(0).getLibraryName(libraryId));
-        model.addAttribute("wordNumber", wordNumber++);
+        model.addAttribute("wordNumber", wordNumber);
         model.addAttribute("countWord", "Learned");
         model.addAttribute("countLearnedWordsInWordsBlock", countLearnedWordsInWordsBlock);
         model.addAttribute("remoteUser", username.toUpperCase().substring(0, 1));
-        if (wordNumber >= words.size() - 1 || wordNumber < 0) {
+        if (wordNumber > words.size() - 1 || wordNumber < 0) {
             wordNumber = 0;
+            System.out.println("wordNumber > words.size() - 1");
+            return "redirect:/learn/" + libraryId;
         }
+        System.out.println("wordNumber is " + wordNumber + " " + words.get(wordNumber).getWord());
+        wordNumber++;
         return "learn";
     }
 
@@ -102,6 +110,8 @@ public class LearnController {
         String username = request.getRemoteUser();
         int wordsBlock = wordRepo.findFirstUnlearnedWordsBlockNumber(libraryId, username);
         words = wordRepo.findByLibraryNumberAndNotLearnedAndWordsBlockIsAndShuffle(libraryId, username, wordsBlock);
+        System.out.println("selectLibrary");
+        System.out.println("words.size - " + words.size());
         return "redirect:/learn/";
     }
 
@@ -126,3 +136,4 @@ public class LearnController {
         return "redirect:/learn/";
     }
 }
+//TODO reset progress method

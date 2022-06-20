@@ -25,13 +25,15 @@
                        th:if="${learnedField} == 0 or ${learnedField} == 1 or ${learnedField} == 3">
                     </p>
                     <p class="words_text"
-                       th:utext="${wordsBlockIsLearned} ? ${wordsBlockIsLearned} : ${libraryIsLearned}"
+                       th:utext="${wordsBlockIsLearned} ? 'Word`s block #' + ${wordsBlock} + ' is learned':
+                        'Library ' + ${libraryName} + 'is learned'"
                        th:if="${wordsBlockIsLearned} or ${libraryIsLearned}">
                     </p>
                     <div id="ear_word_guessed" th:if="${learnedField} == 2" style="visibility: hidden">
                         <p class="words_text" th:utext="${word.getTranslate()}"></p>
                     </div>
-                    <div id="word_guessed" style="visibility: hidden">
+                    <div id="word_guessed" style="visibility: hidden" th:if="${learnedField} == 0 or ${learnedField} == 1
+                     or ${learnedField} == 2 or ${learnedField} == 3">
                         <p class="words_text" th:utext="${word.getTranscription()}"></p>
                         <p class="words_text" th:utext="${word.getWord()}"></p>
                     </div>
@@ -91,12 +93,13 @@
                 </div>
             </div>
             <div class="input_div" th:if="${learnedField} == 3">
-                <input class="login_text input_text" type="text" th:id="input_text" placeholder="Type the text">
+                <input class="login_text input_text" type="text" th:id="input_text" pattern="^[a-zA-Z\s]+$" placeholder="Type the text">
                 <img class="input_arrow" th:src="@{/img/arrow.png}" alt="arrow"
                      th:onclick="'checkInput(\'' + ${word.getWord()} + '\');'">
             </div>
         </div>
-        <form th:method="GET">
+        <form th:method="GET" th:if="${learnedField} == 0 or ${learnedField} == 1
+                     or ${learnedField} == 2 or ${learnedField} == 3">
             <div class="repeat_button" th:id="next_button_div" style="display: none">
                 <input type="hidden" th:name="learnedField" th:value="${learnedField}+1">
                 <input type="hidden" th:name="repeatedField" th:value="${repeatedField}">

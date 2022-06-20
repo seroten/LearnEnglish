@@ -79,13 +79,20 @@ function choiceLetter(word, letter, id) {
     }
 }
 
+let checked = false;
 function checkInput(word) {
-    if(document.getElementById('input_text').value === word) {
-        document.getElementById('checkedInput').setAttribute('value', 'rightChoice');
+    if (!checked) {
         document.getElementById('next_button_div').style.display = "flex";
         document.getElementById('word_guessed').style.visibility = "visible";
         speak(word);
-    } else {
-        document.getElementById('checkedInput').setAttribute('value', 'wrongChoice');
+        if (document.getElementById('input_text').value === word) {
+            document.getElementById('checkedInput').setAttribute('value', 'rightChoice');
+        } else {
+            document.getElementById('checkedInput').setAttribute('value', 'wrongChoice');
+            document.getElementById('input_text').style.borderColor = "red";
+        }
+        document.getElementById('input_text').setAttribute('disabled', 'disabled');
+        document.getElementById('input_text').setAttribute('placeholder', '');
+        checked = true;
     }
 }
