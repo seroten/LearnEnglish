@@ -9,6 +9,7 @@ import java.util.List;
 public interface WordRepo extends JpaRepository<Word, Long> {
 
     List<Word> findByLibraryNumber(int number);
+    List<Word> findByLibraryNumberAndWordsBlock(int number, int wordsBlock);
 
     @Query(value = "select w.id, w.word, w.translate, w.library_number, w.words_block," +
             " w.image, w.mp3, w.transcription from word w" +
