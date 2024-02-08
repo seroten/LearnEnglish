@@ -73,4 +73,16 @@ public interface WordRepo extends JpaRepository<Word, Long> {
             " and (up.learned != 4 or up.learned is null)",
             nativeQuery = true)
     int findFirstUnlearnedWordsBlockNumber(int libraryId, String username);
+
+    @Query(value = "select w.id, w.word, w.translate, w.library_number, w.words_block," +
+            " w.image, w.mp3, w.transcription from word w" +
+            " left join (select up.word_id, up.repeated, up.learned from user_progress up" +
+            " inner join usr u on up.user_id = u.id" +
+            " inner join word w on w.id = up.word_id" +
+            " where u.username = ?2) nt on nt.word_id = w.id" + //4 - final status of word`s learning
+            " where w.library_number = ?1 and (nt.learned != 4 or nt.learned is null)" +
+            " order by random()" +
+            "limit ?3",
+            nativeQuery = true)
+    List<Word> findByLibraryNumberAndNotLearnedAndWordsCountAndShuffle(int libraryId, String username, int wordsCount);
 }

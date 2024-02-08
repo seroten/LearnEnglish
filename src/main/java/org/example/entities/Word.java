@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Random;
+import java.util.*;
 
 @Data
 @NoArgsConstructor

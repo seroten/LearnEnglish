@@ -7,14 +7,14 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
-        $(function() {
-            var f = $('[name="format"]'), r = $('[type="radio"]').not(f), n =  $('[name="direction"]');
-            f.on("click", function() {
+        $(function () {
+            var f = $('[name="format"]'), r = $('[type="radio"]').not(f), n = $('[name="direction"]');
+            f.on("click", function () {
                 var repeat = this.value == "repeat";
-                r.each(function(indx, el){
-                    repeat ? $(el).prop({disabled : true, checked : false}) : $(el).removeAttr("disabled")
+                r.each(function (indx, el) {
+                    repeat ? $(el).prop({disabled: true, checked: false}) : $(el).removeAttr("disabled")
                 });
-                n.prop({disabled : !repeat})
+                n.prop({disabled: !repeat})
             })
         });
     </script>
@@ -28,12 +28,20 @@
             <p class="option_text">Type of training</p>
         </div>
         <div class="option_form">
-            <form  th:method="GET" th:action="@{/exercises/{id}(id = ${libraryId})}">
+            <form th:method="GET" th:action="@{/exercises/{id}(id = ${libraryId})}">
                 <div>
-                    <label class="radio2 radio3" for="format1">
-                        <input type="radio" id="format1" name="format" value="learn">
-                        <span class="words_text">Learn</span>
-                    </label>
+                    <div>
+                        <label class="radio2 radio3" for="format1">
+                            <input type="radio" id="format1" name="format" value="learn">
+                            <span class="words_text">Learn</span>
+                        </label>
+                        <select class="words_text" id="count" name="count">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                        </select>
+                        <p class="words_text">words</p>
+                    </div>
                     <div class="line_menu line_menu2"></div>
                     <label class="radio2" for="format2">
                         <input type="radio" id="format2" name="format" value="repeat" checked>

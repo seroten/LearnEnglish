@@ -66,10 +66,12 @@ public class RepeatController {
     @GetMapping("/exercises/{id}")
     public String selectLibrary(@PathVariable String id,
                                 @RequestParam String format,
+                                @RequestParam String count,
                                 @RequestParam(required = false) String direction,
                                 HttpServletRequest request) {
         if(format.equals("learn")) {
-            return "redirect:/learn/" + id;
+            System.out.println(count);
+            return "redirect:/learn/" + id + "/" + count;
         }
         if (words != null && words.size() > 0) {
             words.clear();

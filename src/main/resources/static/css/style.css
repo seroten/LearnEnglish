@@ -75,7 +75,8 @@ body {
 .words_text {
   padding-left: 20px;
   padding-right: 20px;
-  font-size: 5vh;
+  margin-bottom: 35px;
+  font-size: 300%;
   line-height: 48px;
   letter-spacing: 0.05em;
   text-align: center;
@@ -92,7 +93,7 @@ body {
 
 button {
   min-height: 7vh;
-  width: 25%;
+  width: 35%;
   margin-top: 5vh;
   background-color: #ff6a21;
   border: aliceblue;
@@ -132,7 +133,7 @@ button:hover {
 }
 
 .button_text {
-  font-size: 3vh;
+  font-size: 300%;
   width: auto;
   line-height: 48px;
   letter-spacing: 0.05em;
@@ -223,7 +224,7 @@ button:hover {
 }
 
 .footer_text {
-  font-size: 3vh;
+  font-size: 300%;
   line-height: 48px;
   letter-spacing: 0.05em;
   text-align: center;
@@ -255,7 +256,7 @@ button:hover {
 }
 
 .option_text {
-  font-size: 6vh;
+  font-size: 4vh;
   text-align: center;
   padding: 5vh;
 }
